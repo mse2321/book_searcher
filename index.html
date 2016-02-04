@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="demo" ng-controller="ctrl">
+	<head>
+		<meta charset="UTF-8">
+		<title>Flicker Searcher</title>
+	</head>
+	<style>
+body { font-family: 'Arial', sans-serif; text-align: center; }
+h1 { font-size: 40px; color: #6a1b9a;}
+header { margin-top: 70px; margin-bottom: 70px; }
+section { margin-bottom: 100px; }
+input { width: 30%; padding: 10px; border-radius: 5px; font-size: 18px; }
+footer { position: absolute; bottom: 1%; left: 46%;}
+.message { margin-top: 50px; }
+.flicker { background: linear-gradient(#8e24aa, #6a1b9a); color: white; border-radius: 5px; padding: 10px 20px; font-size: 20px; border: none; font-weight: 600; cursor: pointer;}
+.flicker:hover { background: linear-gradient(#eceff1, #b0bec5); color: #6a1b9a; }
+.hidden { display: none; }
+.photos_container { background-color: rgba(62, 69, 81, 0.5); }
+	</style>
+	<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.3.15/angular.min.js"></script>
+	<script>
+		var demo = angular.module('demo', [])
+			demo.controller('ctrl', function($scope){
+				$scope.photo = [];
+				$scope.search_term = $scope.flicker_search;
+			})
+	</script>
+	<body>
+		<header>
+			<h1>Flickr Searcher</h1>
+		</header>
+		<section>
+			<form name="flicker_form">
+				<input type="text" placeholder="Enter a tag to search for" ng-model="flicker_search">
+				<button class="flicker">Submit</button>
+			</form>
+			<div class="message hidden">
+				<p>Searching Instagram for photos tagged with {{ flicker_search }}</p>
+			</div>
+		</section> <!-- end of search bar section -->
+		<section class="hidden photos_container">
+			<!-- photos -->
+		</section> <!-- end of photos section -->
+		<footer>
+			<p>&copy;2016 ME Innovation</p>
+		</footer>
+	</body>
+</html>
