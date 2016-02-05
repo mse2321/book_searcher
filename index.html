@@ -44,8 +44,11 @@ footer { position: relative; bottom: 1%; }
                       console.log(i);
 
                       // Trying to check to see if a property does not exist
-                      if ($scope.books.items[i].volumeInfo.hasOwnProperty(imageLinks) === undefined) {
-                        alert('There is not image available');
+                      if (!$scope.books.items[i].volumeInfo.imageLinks) {
+                        $scope.book_objects.push({
+                          title: $scope.books.items[i].volumeInfo.title,
+                          thumbnail: 'No Image Available'
+                        });
                       } else {
                         $scope.book_objects.push({
                           title: $scope.books.items[i].volumeInfo.title,
