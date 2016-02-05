@@ -10,7 +10,7 @@ h1 { font-size: 40px; color: #6a1b9a; }
 header { margin-top: 70px; margin-bottom: 70px; }
 section { margin-bottom: 100px; }
 input { width: 30%; padding: 10px; border-radius: 5px; font-size: 18px; }
-footer { position: absolute; bottom: 1%; left: 46%; }
+footer { position: relative; bottom: 1%; }
 .message { margin-top: 50px; }
 .book_button { background: linear-gradient(#8e24aa, #6a1b9a); color: white; border-radius: 5px; padding: 10px 20px; font-size: 20px; border: none; font-weight: 600; cursor: pointer; }
 .book_button:hover { background: linear-gradient(#eceff1, #b0bec5); color: #6a1b9a; }
@@ -27,20 +27,31 @@ footer { position: absolute; bottom: 1%; left: 46%; }
             demo.controller('ctrl', function($scope, $http){
 
                 $scope.viewable = "hidden";
+                $scope.viewMessage = "hidden";
+                $scope.display = function() {
+                  $scope.viewMessage = "show";
+                };
 
                 $scope.search = function() {$http({ method: 'JSONP', url: 'https://www.googleapis.com/books/v1/volumes?q=' + $scope.book_search + '&key=AIzaSyBwxYyZRVBuj47LGnSEg3J9tCOhcZtKlAo&callback=JSON_CALLBACK'})
                   .success(function(data) {
-                    //console.log(data)
+                    console.log(data);
                     $scope.books = data;
                     $scope.book_objects = [];
                     $scope.viewable = "show";
+                    console.log($scope.books.items.length);
                     
-                    for(i = 1; i < 10; i++) {
-                      
-                      $scope.book_objects.push({
-                        title: $scope.books.items[i].volumeInfo.title,
-                        thumbnail: $scope.books.items[i].volumeInfo.imageLinks.smallThumbnail
-                      });
+                    for(i = 1; i < $scope.books.items.length; i++) {
+                      console.log(i);
+
+                      // Trying to check to see if a property does not exist
+                      if ($scope.books.items[i].volumeInfo.hasOwnProperty(imageLinks) === undefined) {
+                        alert('There is not image available');
+                      } else {
+                        $scope.book_objects.push({
+                          title: $scope.books.items[i].volumeInfo.title,
+                          thumbnail: $scope.books.items[i].volumeInfo.imageLinks.smallThumbnail
+                        });
+                      };
 
                     };
                   });
@@ -53,9 +64,9 @@ footer { position: absolute; bottom: 1%; left: 46%; }
             <h1>Google Books Searcher</h1>
         </header>
         <section>
-                <input type="text" placeholder="Enter a tag to search for" ng-model="book_search">
+                <input type="text" placeholder="Enter a tag to search for" ng-model="book_search" ng-mouseleave="display()">
                 <button class="book_button" ng-click="search()">Submit</button>
-            <div class="message">
+            <div class="message {{ viewMessage }}">
                 <p>Searching Instagram for photos tagged with {{ book_search }}</p>
             </div>
         </section> <!-- end of search bar section -->
