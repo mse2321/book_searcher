@@ -5,23 +5,29 @@
         <title>Google Books Searcher</title>
     </head>
     <style>
-body { font-family: 'Arial', sans-serif; text-align: center; font-size: 18px;}
+body { font-family: 'Arial', sans-serif; text-align: center; font-size: 18px; }
 h1 { font-size: 40px; color: #6a1b9a; }
 header { margin-top: 70px; margin-bottom: 70px; }
 section { margin-bottom: 100px; }
-.image_container {width: 200px; padding: 10px 0;}
-table {padding: 10px;}
+.image_container { width: 200px; padding: 10px 0; text-align: center;}
+table { padding: 5px 0; }
+tr { border-bottom: 1px solid #fff;}
+.book_info, th {padding-left: 20px;}
+th { color: #6a1b9a; font-size: 20px;}
+tr:hover { background-color: #6a1b9a; color: white;}
 input { width: 30%; padding: 10px; border-radius: 5px; font-size: 18px; }
-button {font-size: 18px;}
+button { font-size: 18px; padding: 5px 30px; border-radius: 5px; cursor: pointer; border: none; box-shadow: 2px 2px 2px #6a1b9a; color: black; background: linear-gradient(#eceff1, #b0bec5);}
 footer { position: relative; bottom: 1%; }
 .message { margin-top: 50px; }
-.book_button { background: linear-gradient(#8e24aa, #6a1b9a); color: white; border-radius: 5px; padding: 10px 20px; font-size: 20px; border: none; font-weight: 600; cursor: pointer; }
-.book_button:hover { background: linear-gradient(#eceff1, #b0bec5); color: #6a1b9a; }
+.book_pic { border: 2px solid white; }
+.book_pic:hover { border: 2px solid #6a1b9a; }
+#book_button { background: linear-gradient(#8e24aa, #6a1b9a); color: white; border-radius: 5px; padding: 10px 20px; font-size: 20px; border: none; font-weight: 600; cursor: pointer; box-shadow: none;}
+#book_button:hover { background: linear-gradient(#eceff1, #b0bec5); color: #6a1b9a; }
 .hidden { display: none; }
+.button_container { width: 200px; text-align: center;}
 .show { display: block; }
-.books_container { background-color: rgba(62, 69, 81, 0.5); padding: 10px; width: 100%; }
-#book_info_column, #image_column { width: 50%; vertical-align: top; text-align: left; }
-#book_info_column { text-align: right;} 
+.books_container { background-color: rgba(62, 69, 81, 0.4); width: 100%; padding-top: 10px;}
+#book_table { width: 100%; vertical-align: top; text-align: left; }
     </style>
     <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.3.15/angular.min.js"></script>
     <script>
@@ -57,7 +63,7 @@ footer { position: relative; bottom: 1%; }
                         $scope.book_objects.push({
                           title: $scope.books.items[i].volumeInfo.title,
                           thumbnail: $scope.books.items[i].volumeInfo.imageLinks.smallThumbnail,
-                          link: $scope.books.items[i].volumeInfo.selfLink,
+                          link: $scope.books.items[i].volumeInfo.canonicalVolumeLink,
                           author: $scope.books.items[i].volumeInfo.authors.toString()
                         });
                       };
@@ -74,30 +80,34 @@ footer { position: relative; bottom: 1%; }
         </header>
         <section>
                 <input type="text" placeholder="Enter a tag to search for" ng-model="book_search" ng-mouseleave="display()">
-                <button class="book_button" ng-click="search()">Submit</button>
+                <button id="book_button" ng-click="search()">Submit</button>
             <div class="message {{ viewMessage }}">
                 <p>Searching Instagram for photos tagged with {{ book_search }}</p>
             </div>
         </section> <!-- end of search bar section -->
         <section class="books_container {{ viewable }}">
-            <!--{{ books }}-->
-            <table id="image_column">
+            <table id="book_table">
+              <tr>
+                <th>&nbsp;</th>
+                <th>Title</th>
+                <th>Author</th>
+              </tr>
               <tr ng-repeat="book_object in book_objects">
                 <td class="image_container">
-                  <a href="{{ link }}"><img class="book_pic" src="{{ book_object.thumbnail }}" alt="{{ book_object.title }}" /></a>
+                  <a href="{{ book_object.link }}" target="_blank"><img class="book_pic" src="{{ book_object.thumbnail }}" alt="{{ book_object.title }}" /></a>
                 </td>
-                <td>
+                <td class="book_info">
                   {{ book_object.title }}
                 </td>
-                <td>
+                <td class="book_info">
                   {{ book_object.author }}
                 </td>
-                <td>
-                  <a href="{{ link }}"><button>More Info</button></a>
+                <td class="button_container">
+                  <a href="{{ book_object.link }}" target="_blank"><button>More Info</button></a>
                 </td>
               </tr>
             </table>
-        </section> <!-- end of photos section -->
+        </section> <!-- end of table section -->
         <footer>
             <p>&copy;2016 ME Innovation</p>
         </footer>
